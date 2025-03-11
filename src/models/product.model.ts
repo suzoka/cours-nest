@@ -1,38 +1,44 @@
 import { Injectable } from "@nestjs/common";
 import { IProductDTO } from "src/dto/product.dto";
-import { Entity, PrimaryGeneratedColumn, Column, DataSource } from "typeorm"
+import { Prop, Schema, SchemaFactory, InjectConnection } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
+import { Connection } from 'mongoose';
 
-@Entity()
+export type ProductDocument = HydratedDocument<ProductEntity>;
+
+@Schema()
 export class ProductEntity {
 
-    @PrimaryGeneratedColumn()
+    @Prop()
     id: string;
 
-    @Column()
+    @Prop()
     name: string;
 
-    @Column()
+    @Prop()
     quantity: Number;
 
-    @Column()
+    @Prop()
     price: Number;
 
-    @Column()
+    @Prop()
     tax: Number;
 
-    @Column()
+    @Prop()
     description?: string;
 
-    @Column()
+    @Prop()
     minimumAge?: Number;
 }
 
+export const ProductSchema = SchemaFactory.createForClass(ProductEntity);
+
 @Injectable()
 export default class ProductModel {
-    constructor(private readonly dataSource: DataSource) {}
+    constructor(@InjectConnection() private connection: Connection) {}
 
     async createProduct(product: IProductDTO): Promise<IProductDTO> {
-        return Promise.resolve( product ) ;
+        const shema = new ProductSchema(product)
+        return shema.save();
     }
-
 }

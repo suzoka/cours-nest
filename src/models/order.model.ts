@@ -1,24 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
-import { IOrderDTO } from "../dto/order.dto"
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'; import { IOrderDTO } from "../dto/order.dto"
+import { HydratedDocument } from 'mongoose';
 
-@Entity()
+export type OrderDocument = HydratedDocument<OrderEntity>;
+
+@Schema()
 export class OrderEntity {
 
-  @PrimaryGeneratedColumn()
-  id: string;
+    @Prop()
+    id: string;
 
-  @Column()
-  creationDate: Date;
+    @Prop()
+    creationDate: Date;
 
-  @Column()
-  invoiceId: string;
+    @Prop()
+    invoiceId: string;
 
-  @Column()
-  clientId: string;
+    @Prop()
+    clientId: string;
 
-  @Column()
-  status: string;
+    @Prop()
+    status: string;
 
-  @Column()
-  products: Array<IOrderDTO>;
+    @Prop()
+    products: Array<IOrderDTO>;
 }
+
+export const OrderSchema = SchemaFactory.createForClass(OrderEntity);

@@ -1,23 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
-@Entity()
+export type ClientDocument = HydratedDocument<ClientEntity>;
+
+@Schema()
 export class ClientEntity {
 
-  @PrimaryGeneratedColumn()
-  id: string;
+    @Prop()
+    id: string;
 
-  @Column()
-  name: string;
+    @Prop()
+    name: string;
 
-  @Column()
-  email: string;
+    @Prop()
+    email: string;
 
-  @Column()
-  adresse: string;
+    @Prop()
+    adresse: string;
 
-  @Column()
-  phone?: string;
+    @Prop()
+    phone?: string;
 
-  @Column()
-  birthDate: Date;
+    @Prop()
+    birthDate: Date;
 }
+
+export const ClientSchema = SchemaFactory.createForClass(ClientEntity);
