@@ -1,3 +1,4 @@
+import { Injectable } from "@nestjs/common";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 @Entity()
@@ -23,4 +24,10 @@ export class ProductEntity {
 
   @Column()
   minimumAge?: Number;
+}
+
+@Injectable()
+export default class ProductModel {
+  constructor(){}
+
 }
