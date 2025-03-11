@@ -4,15 +4,15 @@ import ProductService from 'src/services/product.service';
 
 @Controller('/products')
 export default class ProductController {
-  constructor(
-    private readonly productService: ProductService
-  ) {}
+    constructor(
+        private readonly productService: ProductService
+    ) { }
 
-  @Put()
-  @HttpCode(201)
-  createProduct(
-    @Body() requestProduct: IProductDTO
-  ): IProductDTO {
-    return this.productService.createProduct(requestProduct);
-  }
+    @Put()
+    @HttpCode(201)
+    createProduct(
+        @Body() requestProduct: IProductDTO
+    ): Promise<IProductDTO> {
+        return this.productService.createProduct(requestProduct);
+    }
 }

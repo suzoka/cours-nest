@@ -1,10 +1,13 @@
-import { NestFactory } from '@nestjs/core';
+import { NestApplication, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import swaggerInit from './swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api')
+    const app: NestApplication = await NestFactory.create(AppModule);
+    app.setGlobalPrefix('api')
 
-  await app.listen(process.env.PORT ?? 3000);
+    // await swaggerInit(app);
+
+    await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

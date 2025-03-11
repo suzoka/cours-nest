@@ -4,7 +4,8 @@ import Services from './services';
 import ProductController from './controllers/product.controller';
 
 @Module({
-    imports: [],
+    imports: [
+    ],
     controllers: [
         ProductController
     ],
