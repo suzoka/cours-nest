@@ -1,14 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { IProductDTO } from "src/dto/product.dto";
-import { Prop, Schema, SchemaFactory, InjectConnection } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import { Connection } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument, Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 export type ProductDocument = HydratedDocument<ProductEntity>;
 
 @Schema()
 export class ProductEntity {
-
     @Prop()
     id: string;
 
@@ -16,29 +15,38 @@ export class ProductEntity {
     name: string;
 
     @Prop()
-    quantity: Number;
+    quantity: number;
 
     @Prop()
-    price: Number;
+    price: number;
 
     @Prop()
-    tax: Number;
+    tax: number;
 
     @Prop()
     description?: string;
 
     @Prop()
-    minimumAge?: Number;
+    minimumAge?: number;
+
+    @Prop()
+    category: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(ProductEntity);
 
 @Injectable()
 export default class ProductModel {
-    constructor(@InjectConnection() private connection: Connection) {}
+    constructor(
+        @InjectModel(ProductEntity.name) private productModel: Model<ProductDocument>
+    ) {}
 
     async createProduct(product: IProductDTO): Promise<IProductDTO> {
-        const shema = new ProductSchema(product)
-        return shema.save();
+        try {
+            const createdProduct = new this.productModel(product);
+            return await createdProduct.save();
+        } catch (error) {
+            throw new Error(`Failed to create product: ${error.message}`);
+        }
     }
 }
