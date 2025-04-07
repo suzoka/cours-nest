@@ -37,4 +37,11 @@ export default class ProductController {
     ): Promise<IProductDTO | null> {
         return this.productService.getProduct(productId);
     }
+
+    @Get()
+    getProducts(
+        @Body('q') q: Object // TODO : Querys possibles
+    ): Promise<Array<IProductDTO>> {
+        return this.productService.getProducts(q);
+    }
 }

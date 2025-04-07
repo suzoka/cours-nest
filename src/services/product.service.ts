@@ -54,4 +54,8 @@ export default class ProductService {
     async getProduct(productId: string): Promise<IProductDTO | null> {
         return this.productModel.getProduct(productId);
     }
+
+    async getProducts(q: Object): Promise<Array<IProductDTO>>  { // TODO : Querys possibles
+        return this.productModel.getProducts(q)
+    }
 }

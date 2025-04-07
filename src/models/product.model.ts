@@ -95,4 +95,17 @@ export default class ProductModel {
             throw InternalServerErrorException;
         }
     }
+
+    async getProducts(q: Object): Promise<Array<IProductDTO>> { // TODO : Querys possibles
+        try {
+            const products = await this.productModel.find({}).select({name: 1, price: 1})
+            // const products = await this.productModel.find({}).select({category: 0})
+            return products
+        } catch (error) {
+            if (error instanceof Error.CastError){
+                throw new BadRequestException
+            }
+            throw InternalServerErrorException;
+        }
+    }
 }
