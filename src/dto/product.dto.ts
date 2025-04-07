@@ -20,5 +20,5 @@ export class IProductDTO {
 
   @IsString()
   @IsNotEmpty()
-  category: string;
+  category?: string;
 }

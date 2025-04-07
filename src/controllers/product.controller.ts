@@ -1,4 +1,4 @@
-import { Body, Param, Controller, Delete, HttpCode, Put } from '@nestjs/common';
+import { Body, Param, Controller, Delete, HttpCode, Put, Get } from '@nestjs/common';
 import { IProductDTO } from 'src/dto/product.dto';
 import ProductService from 'src/services/product.service';
 
@@ -21,5 +21,20 @@ export default class ProductController {
         @Param('id') productId: string
     ): Promise<IProductDTO | null> {
         return this.productService.deleteProduct(productId);
+    }
+
+    @Put(':id')
+    updateProduct(
+        @Body() updatedFields: IProductDTO,
+        @Param('id') productId: string
+    ): Promise <IProductDTO | null> {
+        return this.productService.updateProduct(productId, updatedFields)
+    }
+
+    @Get(':id')
+    getProduct(
+        @Param('id') productId: string
+    ): Promise<IProductDTO | null> {
+        return this.productService.getProduct(productId);
     }
 }

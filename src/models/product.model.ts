@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { IProductDTO } from "src/dto/product.dto";
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Model, Error } from 'mongoose';
@@ -58,6 +58,40 @@ export default class ProductModel {
             if (error instanceof Error.CastError){
                 throw new BadRequestException
             }
+            throw InternalServerErrorException;
+        }
+    }
+
+    async updateProduct(productId: string, updatedFields: IProductDTO): Promise<IProductDTO | null> {
+        try {
+            const product = await this.productModel.findOneAndUpdate({_id: productId}, updatedFields, {new: true} )
+            return product
+        } catch (error) {
+            if (error instanceof Error.CastError){
+                throw new BadRequestException
+            }
+            throw InternalServerErrorException;
+        }
+    }
+
+    async getProduct(productId: string): Promise<IProductDTO | null> {
+        try {
+            const product = await this.productModel.findById(productId)
+
+            if (!product) {
+                throw new NotFoundException
+            }
+
+            return product
+        } catch (error) {
+            if (error instanceof Error.CastError){
+                throw new BadRequestException
+            }
+
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException
+            }
+
             throw InternalServerErrorException;
         }
     }
